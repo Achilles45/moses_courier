@@ -1,27 +1,19 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import employerRoutes from '../router/employerRoutes';
+import generalRoutes from '../router/generalRoutes';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter) //This allows me to use the vue router anywhere once i import this file, because it was mounted into vue js here by using Vue.use and as referenced in main.js
 
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
+let allRoutes = [];
+let importedRoutes = allRoutes.concat(generalRoutes, employerRoutes);
+let routes = importedRoutes;
 
 const router = new VueRouter({
-  routes
+  routes,
+  mode: 'history',
+  scrollBehavior(to, from, savedPositions){
+    return {x: 0, y: 0}
+  }
 })
-
 export default router
