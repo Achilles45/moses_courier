@@ -166,14 +166,16 @@ export default {
         async createListing(){
             try {
                 //First check if all the fields have been filled out
-                this.text = "Creating your package..."
+                this.text = "Your package has been"
                  if (!this.details.receiversName || !this.details.receiversEmail || !this.details.totalItems || !this.details.weight || !this.details.currentLocation || !this.details.insurance || !this.details.shipingAddress || !this.details.shipingDate || !this.details.deliveryDate || !this.details.status || !this.details.sendersName || !this.details.sendersAddress || !this.details.comment) {
                 this.err = 'Please fill out all fields in the form'
                 this.removeAlert()
                 } else {
-                  const response = await axios.post(`https://courierdemo.herokuapp.com/package/new`, this.details);
-                  console.log(response.data);       
-                  this.redirectToOverview()
+                  await axios.post(`https://courierdemo.herokuapp.com/package/new`, this.details); 
+                  this.text = "Package created"    
+                  .then(() =>{
+                      this.redirectToOverview()
+                  })
                 }
             } catch (error) {
                 console.log(error)
@@ -182,7 +184,7 @@ export default {
         redirectToOverview(){
             setTimeout(() => {
                 this.$router.push({path: '/dashboard/overview', query:{created: "success"}})
-            }, 2000);
+            }, 3000);
         }
     }
 }
