@@ -14,7 +14,7 @@
            <li><router-link to="/">Home</router-link></li>
            <li><router-link to="/about">About company</router-link></li>
            <li><router-link to="/services">Services</router-link></li>
-           <li><router-link to="/tracking">Track Shipment</router-link></li>
+           <!-- <li><router-link to="/tracking">Track Shipment</router-link></li> -->
            <li><router-link to="/contact">Contact Us</router-link></li>
            <li><router-link to="/request" class="quote__btn">Request a quote</router-link></li>
           </ul>
