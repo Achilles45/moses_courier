@@ -13,41 +13,64 @@
                 <div class="btn btn-danger">Delete Message</div>
             </div> -->
           </div><hr>
-            <table class="table table-striped">
+           <table class="table table-striped">
         <thead>
           <tr>
-            <th class="d-none d-md-block">Ticket ID</th>
+            <th class="d-none d-md-block">Tracking ID</th>
             <th>Sender's Name</th>
-            <th>Senders's Email</th>
-            <th>Mobile Number</th>
+            <th>Sender's Email</th>
+            <th>Senders's Phone Number</th>
           </tr>
         </thead>
         <tbody>
+          <!-- <router-link to="/dashboard/listings" class="btn btn-primary all_btn">View All Shipments</router-link> -->
           <tr>
-            <td>jahdjklp4039fa</td>
-            <td>Frank Lampard</td>
-            <td>superfraklin@yahoo.com</td>
-            <td>+234-5353-4533</td>
-          </tr>
-          <!-- <tr v-for="job in getMyListings" :key="job.id">
-          <td class="d-none d-md-block">{{ job.id }}</td>
-          <td>{{ job.title }}</td>
-          <td><router-link :to="{ path: `/details/listings/${job.id}`}" class="btn btn-primary">Details</router-link></td>
-          </tr> -->
+          <td >{{ message.id }}</td>
+          <td >{{ message.fullName }}</td>
+          <td>{{ message.emailAddress }}</td>
+          <td>{{ message.phoneNumber }}</td>
+          </tr> 
         </tbody>
       </table>
       <h6>Message Body</h6>
-      <p class="details">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate molestias quibusdam aliquid maiores, id odio perferendis iusto deserunt officia tempore beatae veniam sed consectetur a sapiente. Consectetur quos nesciunt fuga, unde molestiae nobis voluptas? Voluptas aspernatur dolorum facere reiciendis, cumque, accusamus dolores blanditiis nisi nihil alias saepe ut ipsum magnam!</p>
+      <p class="details">{{message.message}}!</p>
+         <div v-if="success" class="alert alert-success">
+              {{success}}
+            </div>
         <div>
-            <div class="btn btn-danger">Delete Message</div>
+               <form @submit.prevent="deleteMessage()" class="d-inline" method="POST">
+            <input type="submit" value="Delete" class="btn btn-danger">
+        </form>
         </div>
       </div>
   </div>
 </template>
 
 <script>
+import axios from "axios"
 export default {
-
+  data(){
+    return{
+      message:{},
+      success: ""
+    }
+  },
+  mounted(){
+    this.fetchSingleMessage()
+  },
+  methods:{
+    async fetchSingleMessage(){
+       const response = await axios.get(`https://courierdemo.herokuapp.com/messages/${this.$route.params.id}`)
+       this.message = response.data.data
+    },
+    async deleteMessage(){
+      const response = await axios.delete(`https://courierdemo.herokuapp.com/messages/delete/${this.$route.params.id}`)
+      this.success = "Oops! Message was successfully deleted and you are been redirected"
+      setTimeout(() => {
+        this.$router.push({path: '/dashboard/messages'})
+      }, 3000);
+    }
+  }
 }
 </script>
 

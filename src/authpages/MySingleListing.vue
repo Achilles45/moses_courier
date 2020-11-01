@@ -6,31 +6,31 @@
              <span class="title">
                 <span>Receiver's Information</span>
             </span> <br> <br>
-        <p> <strong>Receiver's Name:</strong> {{ getSingleListing.language}}</p>
-        <p> <strong>Receiver's Address:</strong> {{ getSingleListing.experience}}</p><br>
+        <p> <strong>Receiver's Name:</strong> {{ listing.receiversName}}</p>
+        <p> <strong>Receiver's Email:</strong> {{ listing.receiversEmail}}</p><br>
           <span class="title package">
                 <span>Package Information</span>
             </span> <br> <br>
 
-        <p> <strong>Total Items:</strong> {{ getSingleListing.location}}</p>
-        <p><strong>Total Weight:</strong> {{ getSingleListing.salary}}</p> 
-        <p><strong>Current Location:</strong> {{ getSingleListing.salary}}</p> 
-        <p><strong>Insurance Status:</strong> {{ getSingleListing.salary}}</p> 
-        <p><strong>Shipping Address:</strong> {{ getSingleListing.salary}}</p> 
-        <p><strong>Shipping Date:</strong> {{ getSingleListing.salary}}</p> 
-        <p><strong>Delivery Date:</strong> {{ getSingleListing.salary}}</p> 
-        <p><strong>Shipment Status:</strong> {{ getSingleListing.salary}}</p><br>
+        <p> <strong>Total Items:</strong> {{ listing.to}}talItems</p>
+        <p><strong>Total Weight:</strong> {{ listing.weight}}</p> 
+        <p><strong>Current Location:</strong> {{ listing.currentLocation}}</p> 
+        <p><strong>Insurance Status:</strong> {{ listing.insurance}}</p> 
+        <p><strong>Shipping Address:</strong> {{ listing.shipingAddress}}</p> 
+        <p><strong>Shipping Date:</strong> {{ listing.shipingDate}}</p> 
+        <p><strong>Delivery Date:</strong> {{ listing.deliveryDate}}</p> 
+        <p><strong>Shipment Status:</strong> {{ listing.status}}</p><br>
         <span class="title">
                 <span>Sender's Information</span>
             </span> <br> <br>
-         <p><strong>Sender's Name:</strong> {{ getSingleListing.salary}}</p>
-         <p><strong>Sender's Address:</strong> {{ getSingleListing.salary}}</p><br>
+         <p><strong>Sender's Name:</strong> {{ listing.sendersName}}</p>
+         <p><strong>Sender's Address:</strong> {{ listing.sendersAddress}}</p><br>
 
          <span class="title package">
                 <span>Comment</span>
             </span> <br> <br>
-            <p><strong>Comment:</strong> {{ getSingleListing.salary}}</p><br> 
-        <router-link :to="{path: `/listings/edit/${getSingleListing.id}`}" class="btn btn-primary mr-2">Edit Package</router-link>
+            <p><strong>Comment:</strong> {{ listing.comment}}</p><br> 
+        <router-link :to="{path: `/listings/edit/${listing.id}`}" class="btn btn-primary mr-2">Edit Package</router-link>
         <form @submit.prevent="deleteListing()" class="d-inline" method="POST">
             <input type="submit" value="Delete" class="btn btn-danger">
         </form>
@@ -40,33 +40,22 @@
 
 <script>
 import axios from 'axios'
-import {mapActions, mapGetters} from 'vuex'
 export default {
     data(){
         return {
-            job: {},
-            token: ""
+            listing: {},
         }
     },
-    computed: mapGetters(['getSingleListing']),
-    created(){
-        // axios.get(`http://localhost:1337/listings/${this.$route.params.id}`)
-        // .then((response)=>{
-        //     this.job = response.data.data
-        // })
-        this.$store.dispatch("fetchSingleListing", {
-            id: this.$route.params.id
+    mounted(){
+        axios.get(`https://courierdemo.herokuapp.com/package/${this.$route.params.id}`)
+        .then((response)=>{
+            this.listing = response.data.data
         })
     },
     methods:{
         deleteListing(){
-            // axios.delete(`http://localhost:1337/listings/delete/${this.$route.params.id}`, { headers: { Authorization: `Bearer ${this.token}` } })
-            // .then((response)=>{
-            //     this.$router.push({path: '/dashboard/overview', query:{deleted: "success"}})
-            // })
-            this.$store.dispatch("deleteListing", {
-                id: this.$route.params.id
-            }).then(()=>{
+            axios.delete(`https://courierdemo.herokuapp.com/package/delete/${this.$route.params.id}`)
+            .then((response)=>{
                 this.$router.push({path: '/dashboard/overview', query:{deleted: "success"}})
             })
         }
@@ -106,10 +95,14 @@ export default {
             line-height: 2;
             color: #454545;
         }
+        p{
+            font-size: 1rem;
+            color: #545454
+        }
         strong{
             color: #545454 !important;
             opacity: .9;
-            font-size: .9rem;
+            font-size: .8rem;
         }
      }
 }

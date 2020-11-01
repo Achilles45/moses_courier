@@ -2,14 +2,14 @@ import firebase from 'firebase';
 import firestore from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCUaGG6SN8GXnslYxk94qmVnye-FC6Rpnk",
-  authDomain: "moses-courier.firebaseapp.com",
-  databaseURL: "https://moses-courier.firebaseio.com",
-  projectId: "moses-courier",
-  storageBucket: "moses-courier.appspot.com",
-  messagingSenderId: "807835492235",
-  appId: "1:807835492235:web:6077840e5d6d44fe9a198e",
-  measurementId: "G-C7CEWTKSKR"
+  apiKey: "AIzaSyAvnjt_vebv4r4IQw7w69UzvH0JsFQ_mZ8",
+  authDomain: "courier-e0196.firebaseapp.com",
+  databaseURL: "https://courier-e0196.firebaseio.com",
+  projectId: "courier-e0196",
+  storageBucket: "courier-e0196.appspot.com",
+  messagingSenderId: "102945703772",
+  appId: "1:102945703772:web:6e24effd6b0b1d3fe36399",
+  measurementId: "G-GCXSCBS4H8"
 };
   // Initialize Firebase
   const firebaseApp = firebase.initializeApp(firebaseConfig);

@@ -15,8 +15,8 @@
           <li @click="removeSideBar()"><router-link to="/dashboard/overview"><i class="fa fa-home icon"></i>&nbsp; Overview</router-link></li>
           <li @click="removeSideBar()"><router-link to="/dashboard/listings"><i class="fa fa-edit icon"></i>&nbsp; All Shipments</router-link></li>
           <li @click="removeSideBar()"><router-link to="/dashboard/messages"><i class="fa fa-envelope icon"></i>&nbsp; Messages</router-link></li>
-           <li @click="removeSideBar()"><router-link to="/dashboard/reset-password"><i class="fa fa-lock icon"></i>&nbsp; Change Password</router-link></li>
-          <li @click="logout()" class="logout"><i class="fa fa-power-off icon"></i>&nbsp; Logout</li>
+           <!-- <li @click="removeSideBar()"><router-link to="/dashboard/reset-password"><i class="fa fa-lock icon"></i>&nbsp; Change Password</router-link></li>
+          <li @click="logout()" class="logout"><i class="fa fa-power-off icon"></i>&nbsp; Logout</li> -->
         </ul>
         </nav>
       </div>
@@ -54,10 +54,9 @@
 <script>
 //Bring in the mixins file
 import logoutMixin from '../mixins/logoutMixin';
-import getUserDetails from '../mixins/getUserDetails';
 import showSideBar from '../mixins/showSideBar';
 export default {
-  mixins: [logoutMixin, getUserDetails, showSideBar],
+  mixins: [logoutMixin, showSideBar],
   data(){
     return{
       firstName: "",

@@ -2,9 +2,9 @@
   <div class="listings">
     <div class="form__wrapper table-responsive">
         <h5>See all your packages</h5>
-        <small v-if="totalJob == 0">
+        <!-- <small v-if="totalJob == 0">
           You currently have no active job listings
-        </small>
+        </small> -->
        <table class="table table-striped">
         <thead>
           <tr>
@@ -16,46 +16,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>jahdjklp4039fa</td>
-            <td>Frank Lampard</td>
-            <td>superfraklin@yahoo.com</td>
-            <td><div class="btn btn-primary">Active</div></td>
-            <td><div class="btn btn-primary">See Details</div></td>
-          </tr>
-           <tr>
-            <td>jahdjklp4039fa</td>
-            <td>Frank Lampard</td>
-            <td>superfraklin@yahoo.com</td>
-            <td><div class="btn btn-danger">Pending</div></td>
-            <td><div class="btn btn-primary">See Details</div></td>
-          </tr>
-           <tr>
-            <td>jahdjklp4039fa</td>
-            <td>Frank Lampard</td>
-            <td>superfraklin@yahoo.com</td>
-            <td><div class="btn btn-danger">Pending</div></td>
-            <td><div class="btn btn-primary">See Details</div></td>
-          </tr>
-           <tr>
-            <td>jahdjklp4039fa</td>
-            <td>Frank Lampard</td>
-            <td>superfraklin@yahoo.com</td>
-            <td><div class="btn btn-primary">Active</div></td>
-            <td><div class="btn btn-primary">See Details</div></td>
-          </tr>
-          <tr>
-            <td>jahdjklp4039fa</td>
-            <td>Frank Lampard</td>
-            <td>superfraklin@yahoo.com</td>
-            <td><div class="btn btn-primary">Active</div></td>
-            <td><div class="btn btn-primary">See Details</div></td>
-          </tr>
-          <!-- <tr v-for="job in getMyListings" :key="job.id">
-          <td class="d-none d-md-block">{{ job.id }}</td>
-          <td>{{ job.title }}</td>
-          <td><router-link :to="{ path: `/details/listings/${job.id}`}" class="btn btn-primary">Details</router-link></td>
-          </tr> -->
+          <!-- <router-link to="/dashboard/listings" class="btn btn-primary all_btn">View All Shipments</router-link> -->
+          <tr v-for="listing in allListings" :key="listing.id">
+          <td class="d-none d-md-block">{{ listing.id }}</td>
+          <td >{{ listing.receiversName }}</td>
+          <td>{{ listing.receiversEmail }}</td>
+          <td>{{ listing.status }}</td>
+          <td><router-link :to="{ path: `/details/listings/${listing.id}`}" class="btn btn-primary">Details</router-link></td>
+          </tr> 
         </tbody>
       </table>
     </div>
@@ -68,24 +36,17 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data(){
     return{
-      jobs: [],
-      token: "",
-      totalJob: null
+      allListings: {},
     }
   },
-  computed: mapGetters(['getMyListings']),
-  created(){
-    // this.token = localStorage.getItem("jwt")
-    // const header = {
-    //   headers:{}
-    // }
-    // axios.get("http://localhost:1337/listings/me", { headers: { Authorization: `Bearer ${this.token}` } })
-    // .then((response) =>{
-    //   console.log(response)
-    //   this.jobs = response.data.data
-    //   this.totalJob = response.data.data.length
-    // })
-    this.$store.dispatch("fetchAllMyListings")
+  methods:{
+      async fetchAllListings(){
+        const response = await axios.get("https://courierdemo.herokuapp.com/packages/")
+        this.allListings = response.data.data
+    },
+  },
+  mounted(){
+    this.fetchAllListings()
   }
 }
 </script>

@@ -72,86 +72,45 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>jahdjklp4039fa</td>
-            <td>Frank Lampard</td>
-            <td>superfraklin@yahoo.com</td>
-            <td><div class="btn btn-primary">Active</div></td>
-            <td><div class="btn btn-primary">See Details</div></td>
-          </tr>
-           <tr>
-            <td>jahdjklp4039fa</td>
-            <td>Frank Lampard</td>
-            <td>superfraklin@yahoo.com</td>
-            <td><div class="btn btn-danger">Pending</div></td>
-            <td><div class="btn btn-primary">See Details</div></td>
-          </tr>
-           <tr>
-            <td>jahdjklp4039fa</td>
-            <td>Frank Lampard</td>
-            <td>superfraklin@yahoo.com</td>
-            <td><div class="btn btn-danger">Pending</div></td>
-            <td><div class="btn btn-primary">See Details</div></td>
-          </tr>
-           <tr>
-            <td>jahdjklp4039fa</td>
-            <td>Frank Lampard</td>
-            <td>superfraklin@yahoo.com</td>
-            <td><div class="btn btn-primary">Active</div></td>
-            <td><div class="btn btn-primary">See Details</div></td>
-          </tr>
-          <tr>
-            <td>jahdjklp4039fa</td>
-            <td>Frank Lampard</td>
-            <td>superfraklin@yahoo.com</td>
-            <td><div class="btn btn-primary">Active</div></td>
-            <td><div class="btn btn-primary">See Details</div></td>
-          </tr><br>
-          <router-link to="/dashboard/listings" class="btn btn-primary all_btn">View All Shipments</router-link>
-          <!-- <tr v-for="job in getMyListings" :key="job.id">
-          <td class="d-none d-md-block">{{ job.id }}</td>
-          <td>{{ job.title }}</td>
-          <td><router-link :to="{ path: `/details/listings/${job.id}`}" class="btn btn-primary">Details</router-link></td>
-          </tr> -->
+          <!-- <router-link to="/dashboard/listings" class="btn btn-primary all_btn">View All Shipments</router-link> -->
+          <tr v-for="listing in allListings" :key="listing.id">
+          <td class="d-none d-md-block">{{ listing.id }}</td>
+          <td >{{ listing.receiversName }}</td>
+          <td>{{ listing.receiversEmail }}</td>
+          <td>{{ listing.status }}</td>
+          <td><router-link :to="{ path: `/details/listings/${listing.id}`}" class="btn btn-primary">Details</router-link></td>
+          </tr> 
         </tbody>
       </table>
+      <div>
+
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import getUserDetails from '../mixins/getUserDetails';
 import getQuery from '../mixins/getQuery';
 import clearAlerts from '../mixins/clearAlert';
-import {mapGetters, mapActions} from 'vuex'
+import firebase from "firebase"
+import db from "@/firebase/init"
 export default {
-  mixins: [getUserDetails, getQuery, clearAlerts],
+  mixins: [getQuery, clearAlerts],
   data(){
     return{
-      jobs: [],
-      totalJob: null,
-        firstName: "",
-        lastName: "",
-        emailAddress: "",
-        accountType: "",
-        phoneNumber: "",
-        alertMessage: "",
-        token: ""
+        allListings: {}
     }
   },
-  computed: mapGetters(['getMyListings']),
-  //Get all the jobs at the created hook
-  created(){
-    // this.token = localStorage.getItem("jwt");
-    // axios.get("http://localhost:1337/listings/me", { headers: { Authorization: `Bearer ${this.token}` } })
-    // .then((response) =>{
-    //   console.log(response)
-    //   this.jobs = response.data.data
-    //   this.totalJob = response.data.data.length
-    // })
-    this.$store.dispatch("fetchAllMyListings")
-  },
+methods:{
+  async fetchAllListings(){
+        const response = await axios.get("https://courierdemo.herokuapp.com/packages/")
+        this.allListings = response.data.data
+    },
+},
+mounted(){
+  this.fetchAllListings()
+}
 }
 </script>
 

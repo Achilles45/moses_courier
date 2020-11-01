@@ -29,17 +29,17 @@
             <div class="col-md-1"></div>
             <div class="col-md-5">
                 <h3>Send us a message</h3>
-                <form action="">
+                <form @submit.prevent="sendMessage()">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Full name *" v-model="name">
+                        <input type="text" class="form-control" placeholder="Full name *" v-model="details.fullName">
                     </div>
                      <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Email address *" v-model="email">
+                        <input type="text" class="form-control" placeholder="Email address *" v-model="details.emailAddress">
                     </div>
                      <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Phone number *" v-model="phone">
+                        <input type="text" class="form-control" placeholder="Phone number *" v-model="details.phoneNumber">
                     </div>
-                    <textarea name="" class="form-control" placeholder="Your message" id="" cols="10" rows="6" v-model="message"></textarea>
+                    <textarea name="" class="form-control" placeholder="Your message" id="" cols="10" rows="6" v-model="details.message"></textarea>
                     <div v-if="err" class="alert alert-danger">
                         {{err}}
                     </div>
@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import axios from "axios"
 import Navbar from "@/components/Navbar.vue"
 import News from "@/components/News.vue"
 import Footer from "@/components/Footer.vue"
@@ -69,28 +70,24 @@ components:{
 },
 data(){
     return{
-        name:null,
-        email:null,
-        phone:null,
-        message:null,
+        details:{
+            name:null,
+            email:null,
+            phone:null,
+            message:null,
+        },
         err:null,
         success:null
     }
 },
 methods:{
-    sendMessage(){
+   async sendMessage(){
         //Check if the user has filled in the form
-        if(!this.name || !this.email || !this.phone || !this.message){
+        if(!this.details.fullName || !this.details.emailAddress || !this.details.phoneNumber || !this.details.message){
             this.err = 'All fields are required'
         }else{
-            //Send the message to the databaseddd
-            db.collections('messages').add({
-                name:this.name,
-                email:this.email,
-                phone: this.phone,
-                message:this.message
-            })
-           this.success = 'Message sent. The team will get back to you shortly'
+            const response = await axios.post("https://courierdemo.herokuapp.com/messages/create", this.details)
+            console.log(response.data.data)
         }
     }
 }

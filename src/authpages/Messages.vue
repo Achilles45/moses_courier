@@ -11,54 +11,22 @@
           <table class="table table-striped">
         <thead>
           <tr>
-            <th class="d-none d-md-block">Ticket ID</th>
-            <th>Sender's Name</th>
-            <th>Senders's Email</th>
-            <th>Mobile Number</th>
+            <th class="d-none d-md-block">Tracking ID</th>
+            <th>Receiver's Name</th>
+            <th>Receiver's Email</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>jahdjklp4039fa</td>
-            <td>Frank Lampard</td>
-            <td>superfraklin@yahoo.com</td>
-            <td>+234-5353-4533</td>
-            <td><div class="btn btn-primary">See Details</div></td>
-          </tr>
-           <tr>
-            <td>jahdjklp4039fa</td>
-            <td>Frank Lampard</td>
-            <td>superfraklin@yahoo.com</td>
-            <td>+234-5353-4533</td>
-            <td><div class="btn btn-primary">See Details</div></td>
-          </tr>
-           <tr>
-            <td>jahdjklp4039fa</td>
-            <td>Frank Lampard</td>
-            <td>superfraklin@yahoo.com</td>
-            <td>+234-5353-4533</td>
-            <td><div class="btn btn-primary">See Details</div></td>
-          </tr>
-           <tr>
-            <td>jahdjklp4039fa</td>
-            <td>Frank Lampard</td>
-            <td>superfraklin@yahoo.com</td>
-            <td>+234-5353-4533</td>
-            <td><div class="btn btn-primary">See Details</div></td>
-          </tr>
-          <tr>
-            <td>jahdjklp4039fa</td>
-            <td>Frank Lampard</td>
-            <td>superfraklin@yahoo.com</td>
-            <td>+234-5353-4533</td>
-            <td><div class="btn btn-primary">See Details</div></td>
-          </tr><br>
-          <!-- <tr v-for="job in getMyListings" :key="job.id">
-          <td class="d-none d-md-block">{{ job.id }}</td>
-          <td>{{ job.title }}</td>
-          <td><router-link :to="{ path: `/details/listings/${job.id}`}" class="btn btn-primary">Details</router-link></td>
-          </tr> -->
+          <!-- <router-link to="/dashboard/listings" class="btn btn-primary all_btn">View All Shipments</router-link> -->
+          <tr v-for="message in messages" :key="message.id">
+          <td >{{ message.id }}</td>
+          <td >{{ message.fullName }}</td>
+          <td>{{ message.emailAddress }}</td>
+          <td>{{ message.phoneNumber }}</td>
+          <td><router-link :to="{ path: `/messages/${message.id}`}" class="btn btn-primary">Details</router-link></td>
+          </tr> 
         </tbody>
       </table>
       </div>
@@ -66,8 +34,22 @@
 </template>
 
 <script>
+import axios from "axios"
 export default {
-
+  data(){
+    return{
+      messages: {}
+    }
+  },
+  created(){
+    this.fetchAllMessages()
+  },
+  methods:{
+     async fetchAllMessages(){
+        const response = await axios.get("https://courierdemo.herokuapp.com/messages/")
+        this.messages = response.data.data
+    },
+  }
 }
 </script>
 

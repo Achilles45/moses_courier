@@ -3,7 +3,7 @@
     <div class="form__wrapper mb-5">
         <h5>Edit Package Here</h5>
         <hr>
-         <form @submit.prevent="createListing()" method="post" class="pt-3">
+         <form @submit.prevent="editListing()" method="post" class="pt-3">
             <div v-if="success" class="alert alert-success">
                 {{ success }}
             </div>
@@ -14,13 +14,13 @@
                 <div class="col-md-6">
                       <div class="form-group">
                           <label for="">Receiver's Name</label>
-                        <input type="text" class="form-control" placeholder="e.g Jones Smith">
+                        <input type="text" class="form-control" v-model="details.receiversName">
             </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="title">Receiver's Email Address</label>
-                    <input type="text" class="form-control" placeholder="e.g jonessmith@gmail.com">
+                    <input type="text" class="form-control" v-model="details.receiversEmail">
             </div>
                 </div>
             </div><br>
@@ -30,14 +30,14 @@
             <div class="row">
                 <div class="col-md-6">
                       <div class="form-group">
-                        <label for="experince">TotalI tems</label>
-                   <input type="text" class="form-control" placeholder="e.g 10">     
+                        <label for="experince">Total Items</label>
+                   <input type="text" class="form-control" v-model="details.totalItems">     
             </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                     <label for="location">Total Weight</label>
-                 <input type="text" class="form-control" placeholder="e.g 100kg">
+                 <input type="text" class="form-control" v-model="details.weight">
             </div>
                 </div>
             </div>
@@ -45,14 +45,14 @@
                 <div class="col-md-6">
                      <div class="form-group">
                     <label for="salary">Current Location</label>
-                    <input type="text" class="form-control" placeholder="e.g National Port, Madrid, Spain">
+                    <input type="text" class="form-control" v-model="details.currentLocation">
                 </div>
             </div>
             <div class="col-md-6">
                   <div class="form-group">
                     <div class="form-group">
                     <label for="description">Insurance status</label>
-                    <input type="text" placeholder="e.g Insured" class="form-control">
+                    <input type="text" v-model="details.insurance" class="form-control">
                 </div>
                 </div>
             </div>
@@ -61,14 +61,14 @@
                 <div class="col-md-6">
                      <div class="form-group">
                     <label for="salary">Shipping Address</label>
-                    <input type="text" class="form-control" placeholder="e.g National Port, Madrid, Spain">
+                    <input type="text" class="form-control" v-model="details.shipingAddress">
                 </div>
             </div>
             <div class="col-md-6">
                   <div class="form-group">
                     <div class="form-group">
                     <label for="description">Shipping Date</label>
-                    <input type="date" placeholder="e.g Insured" class="form-control">
+                    <input type="date" v-model="details.shipingDate" class="form-control">
                 </div>
                 </div>
             </div>
@@ -77,14 +77,14 @@
                 <div class="col-md-6">
                      <div class="form-group">
                     <label for="salary">Delivery Date</label>
-                    <input type="date" class="form-control">
+                    <input type="date" class="form-control" v-model="details.deliveryDate">
                 </div>
             </div>
             <div class="col-md-6">
                   <div class="form-group">
                     <div class="form-group">
                     <label for="description">Shipment Status</label>
-                    <input type="text" placeholder="Moving or On Hold" class="form-control">
+                    <input type="text" v-model="details.status" class="form-control">
                 </div>
                 </div>
             </div>
@@ -97,13 +97,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Sender's Name</label>
-                                <input type="text" class="form-control"  placeholder="e.g Eden Hazard">
+                                <input type="text" class="form-control"  v-model="details.sendersName">
                             </div>
                         </div>
                          <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Sender's Address</label>
-                                <input type="text" class="form-control"  placeholder="e.g Bridge road, London, United Kingdom">
+                                <input type="text" class="form-control" v-model="details.sendersAddress">
                             </div>
                         </div>
                     </div>
@@ -114,7 +114,7 @@
                     <div class="row">
                        <div class="col-12">
                             <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Any other comment">
+                            <input type="text" class="form-control" v-model="details.comment">
                         </div>
                        </div>
                     </div>
@@ -131,17 +131,23 @@
 
 <script>
 import axios from 'axios'
-import { mapActions } from 'vuex'
 export default {
     data(){
         return{
-             jobDetails:{
-                title: "",
-                language: "",
-                experience: "",
-                location: "",
-                salary: "",
-                description: "",
+             details:{
+                receiversName: "",
+                receiversEmail: "",
+                totalItems: "",
+                weight: "",
+                currentLocation: "",
+                insurance: "",
+                shipingAddress: "",
+                shipingDate: "",
+                deliveryDate: "",
+                status: "",
+                sendersName: "",
+                sendersAddress: "",
+                comment: "",
             },
             success: null,
             err: null,
@@ -153,18 +159,15 @@ export default {
        async editListing(){
            try {
                this.text = "Editing...."
-               this.token = localStorage.getItem("jwt")
                //Check if all the fields has been filled out
-               if(this.jobDetails.title && this.jobDetails.language && this.jobDetails.experience && this.jobDetails.location && this.jobDetails.salary && this.jobDetails.description){
-                //    axios.put(`http://localhost:1337/listings/edit/${this.$route.params.id}`, this.jobDetails, { headers: { Authorization: `Bearer ${this.token}` } })
-                //    .then((response) =>{
-                //     this.redirectToOverview();
-                //    })
-                this.$store.dispatch("editListing", {
-                    details: this.jobDetails,
-                    id: this.$route.params.id
+               if(!this.details.receiversName || !this.details.receiversEmail || !this.details.totalItems || !this.details.weight || !this.details.currentLocation || !this.details.insurance || !this.details.shipingAddress || !this.details.shipingDate || !this.details.deliveryDate || !this.details.status || !this.details.sendersName || !this.details.sendersAddress || !this.details.comment){
+                   alert("Please make sure you fill the form completely")
+               } else {
+                    const response = await axios.post(`https://courierdemo.herokuapp.com/package/edit/${this.$route.params.id}`, this.details)
+                    .then((response) =>{
+                        this.success = "Congrats! Package was successfully updated"
+                     this.redirectToOverview();
                 })
-                this.redirectToOverview();
                }
            } catch (error) {
                console.log(error)
@@ -177,15 +180,21 @@ export default {
         }
     },
     created(){
-        axios.get(`http://localhost:1337/listings/${this.$route.params.id}`)
+        axios.get(`https://courierdemo.herokuapp.com/package/${this.$route.params.id}`)
         .then((response)=>{
-            // this.job = response.data.data
-            this.jobDetails.title = response.data.data.title,
-            this.jobDetails.language = response.data.data.language,
-            this.jobDetails.experience = response.data.data.experience,
-            this.jobDetails.location = response.data.data.location,
-            this.jobDetails.salary = response.data.data.salary,
-            this.jobDetails.description = response.data.data.description
+            this.details.receiversName = response.data.data.receiversName,
+            this.details.receiversEmail = response.data.data.receiversEmail,
+            this.details.totalItems = response.data.data.totalItems,
+            this.details.weight = response.data.data.weight,
+            this.details.currentLocation = response.data.data.currentLocation,
+            this.details.insurance = response.data.data.insurance,
+            this.details.shipingAddress = response.data.data.shipingAddress,
+            this.details.shipingDate = response.data.data.shipingDate,
+            this.details.deliveryDate = response.data.data.deliveryDate,
+            this.details.status = response.data.data.status,
+            this.details.sendersName = response.data.data.sendersName,
+            this.details.sendersAddress = response.data.data.sendersAddress,
+            this.details.comment = response.data.data.comment
         })
     }
 }

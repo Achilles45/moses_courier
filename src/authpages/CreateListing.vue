@@ -4,9 +4,9 @@
         <h5>Create a new package for shipping</h5>
         <hr>
         <form @submit.prevent="createListing()" method="post" class="pt-1">
-            <div v-if="success" class="alert alert-success">
+            <!-- <div v-if="success" class="alert alert-success">
                 {{ success }}
-            </div>
+            </div> -->
             <div>
                 <img src="../assets/images/bar.png" class="bar" alt="">
             </div><br>
@@ -17,13 +17,13 @@
                 <div class="col-md-6">
                       <div class="form-group">
                           <label for="">Receiver's Name</label>
-                        <input type="text" class="form-control" placeholder="e.g Jones Smith" v-model="receiversName">
+                        <input type="text" class="form-control" placeholder="e.g Jones Smith" v-model="details.receiversName">
             </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="title">Receiver's Email Address</label>
-                    <input type="text" class="form-control" placeholder="e.g jonessmith@gmail.com" v-model="receiversEmail">
+                    <input type="text" class="form-control" placeholder="e.g jonessmith@gmail.com" v-model="details.receiversEmail">
             </div>
                 </div>
             </div><br>
@@ -34,13 +34,13 @@
                 <div class="col-md-6">
                       <div class="form-group">
                         <label for="experince">TotalI tems</label>
-                   <input type="text" class="form-control" placeholder="e.g 10" v-model="totalItems">     
+                   <input type="text" class="form-control" placeholder="e.g 10" v-model="details.totalItems">     
             </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                     <label for="location">Total Weight</label>
-                 <input type="text" class="form-control" placeholder="e.g 100kg" v-model="weight">
+                 <input type="text" class="form-control" placeholder="e.g 100kg" v-model="details.weight">
             </div>
                 </div>
             </div>
@@ -48,14 +48,14 @@
                 <div class="col-md-6">
                      <div class="form-group">
                     <label for="salary">Current Location</label>
-                    <input type="text" class="form-control" placeholder="e.g National Port, Madrid, Spain" v-model="currentLocation">
+                    <input type="text" class="form-control" placeholder="e.g National Port, Madrid, Spain" v-model="details.currentLocation">
                 </div>
             </div>
             <div class="col-md-6">
                   <div class="form-group">
                     <div class="form-group">
                     <label for="description">Insurance status</label>
-                    <input type="text" placeholder="e.g Insured" class="form-control" v-model="insurance">
+                    <input type="text" placeholder="e.g Insured" class="form-control" v-model="details.insurance">
                 </div>
                 </div>
             </div>
@@ -64,14 +64,14 @@
                 <div class="col-md-6">
                      <div class="form-group">
                     <label for="salary">Shipping Address</label>
-                    <input type="text" class="form-control" placeholder="e.g National Port, Madrid, Spain" v-model="shipingAddress">
+                    <input type="text" class="form-control" placeholder="e.g National Port, Madrid, Spain" v-model="details.shipingAddress">
                 </div>
             </div>
             <div class="col-md-6">
                   <div class="form-group">
                     <div class="form-group">
                     <label for="description">Shipping Date</label>
-                    <input type="date" placeholder="e.g Insured" class="form-control" v-model="shipingDate">
+                    <input type="date" placeholder="e.g Insured" class="form-control" v-model="details.shipingDate">
                 </div>
                 </div>
             </div>
@@ -80,14 +80,14 @@
                 <div class="col-md-6">
                      <div class="form-group">
                     <label for="salary">Delivery Date</label>
-                    <input type="date" class="form-control" v-model="deliveryDate">
+                    <input type="date" class="form-control" v-model="details.deliveryDate">
                 </div>
             </div>
             <div class="col-md-6">
                   <div class="form-group">
                     <div class="form-group">
                     <label for="description">Shipment Status</label>
-                    <input type="text" placeholder="Moving or On Hold" class="form-control" v-model="status">
+                    <input type="text" placeholder="Moving or On Hold" class="form-control" v-model="details.status">
                 </div>
                 </div>
             </div>
@@ -100,13 +100,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Sender's Name</label>
-                                <input type="text" class="form-control"  placeholder="e.g Eden Hazard" v-model="sendersName">
+                                <input type="text" class="form-control"  placeholder="e.g Eden Hazard" v-model="details.sendersName">
                             </div>
                         </div>
                          <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Sender's Address</label>
-                                <input type="text" class="form-control"  placeholder="e.g Bridge road, London, United Kingdom" v-model="sendersAddress">
+                                <input type="text" class="form-control"  placeholder="e.g Bridge road, London, United Kingdom" v-model="details.sendersAddress">
                             </div>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
                     <div class="row">
                        <div class="col-12">
                             <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Any other comment" v-model="comment">
+                            <input type="text" class="form-control" placeholder="Any other comment" v-model="details.comment">
                         </div>
                        </div>
                     </div>
@@ -128,7 +128,7 @@
                 {{ err }}
             </div>
             <div class="button__wrapper pt-4">
-                <button type="submit" class="form__btn">Create Package</button>
+                <button type="submit" class="form__btn">{{text}}</button>
             </div>
         </form>
     </div>
@@ -137,10 +137,12 @@
 
 <script>
 import axios from 'axios'
-import { mapActions } from 'vuex'
+import db from "@/firebase/init"
+import firebase from "firebase" 
 export default {
     data(){
         return{
+                details:{
                 receiversName: "",
                 receiversEmail: "",
                 totalItems: "",
@@ -154,46 +156,33 @@ export default {
                 sendersName: "",
                 sendersAddress: "",
                 comment: "",
+                },
                 success: null,
                 err: null,
+                text: "Create Package"
         }
     },
     methods:{
         async createListing(){
             try {
                 //First check if all the fields have been filled out
-                this.text = "Creating listing..."
-                 if (!this.receiversName || !this.receiversEmail || !this.totalItems || !this.weight || !this.currentLocation || !this.insurance || !this.shipingAddress || !this.shipingDate || !this.deliveryDate || !this.status || !this.sendersName || !this.sendersAddress || !this.comment) {
+                this.text = "Creating your package..."
+                 if (!this.details.receiversName || !this.details.receiversEmail || !this.details.totalItems || !this.details.weight || !this.details.currentLocation || !this.details.insurance || !this.details.shipingAddress || !this.details.shipingDate || !this.details.deliveryDate || !this.details.status || !this.details.sendersName || !this.details.sendersAddress || !this.details.comment) {
                 this.err = 'Please fill out all fields in the form'
                 this.removeAlert()
                 } else {
-                    db.collection('packages').doc(this.receiversName).set({
-                    receiversName:this.receiversName,
-                    receiversEmail:this.receiversEmail,
-                    totalItems:this.totalItems,
-                    weight:this.weight,
-                    currentLocation:this.currentLocation,
-                    insurance:this.insurance,
-                    shipingAddress:this.shipingAddress,
-                    shipingDate:this.shipingDate,
-                    deliveryDate:this.deliveryDate,
-                    status:this.status,
-                    sendersName:this.sendersName,
-                    sendersAddress:this.sendersAddress,
-                    comment:this.comment,
-                }).then((payload) =>{
-                    console.log(payload)
-                })
-            }
-
+                  const response = await axios.post(`https://courierdemo.herokuapp.com/package/new`, this.details);
+                  console.log(response.data);       
+                  this.redirectToOverview()
+                }
             } catch (error) {
-                
+                console.log(error)
             }
         },
         redirectToOverview(){
             setTimeout(() => {
                 this.$router.push({path: '/dashboard/overview', query:{created: "success"}})
-            }, 3000);
+            }, 2000);
         }
     }
 }

@@ -36,9 +36,7 @@
 
 <script>
 //Bring in mixins
-import getUserDetails from '../mixins/getUserDetails';
 export default {
-  mixins: [getUserDetails],
   data(){
     return{
       firstName: "",
