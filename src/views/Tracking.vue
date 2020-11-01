@@ -1,8 +1,9 @@
 <template>
   <div class="track">
+    <Topbar />
     <Navbar />
     <div class="container">
-      <div class="row wrapper">
+      <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8 content__holder">
           <form action="" @submit.prevent="track(trackingId)">
@@ -29,11 +30,11 @@
               <tbody>
                 <tr>
                   <td>DELIVERING STATUS FOR</td>
-                  <td>{{ trackedPackage.receiver_name }}</td>
+                  <td>{{ trackedPackage.receiversName }}</td>
                 </tr>
                 <tr>
                   <td>ITEMS</td>
-                  <td>{{ trackedPackage.items }}</td>
+                  <td>{{ trackedPackage.totalItems }}</td>
                 </tr>
                 <tr>
                   <td>WEIGHT OF THE ITEMS</td>
@@ -45,23 +46,23 @@
                 </tr>
                 <tr>
                   <td>PRESENT LOCATION</td>
-                  <td class="location">{{ trackedPackage.location }}</td>
+                  <td class="location">{{ trackedPackage.currentLocation }}</td>
                 </tr>
                 <tr>
                   <td>SENDER'S NAME</td>
-                  <td>{{ trackedPackage.sender_name }}</td>
+                  <td>{{ trackedPackage.sendersName }}</td>
                 </tr>
                 <tr>
                   <td>SENDER'S ADDRESS</td>
-                  <td>{{ trackedPackage.sender_address }}</td>
+                  <td>{{ trackedPackage.sendersAddress }}</td>
                 </tr>
                 <tr>
                   <td>RECEIVER'S NAME</td>
-                  <td>{{ trackedPackage.receiver_name }}</td>
+                  <td>{{ trackedPackage.receiversName }}</td>
                 </tr>
                 <tr>
                   <td>SHIPPING ADDRESS</td>
-                  <td>{{ trackedPackage.shipping_address }}</td>
+                  <td>{{ trackedPackage.shipingAddress }}</td>
                 </tr>
                 <tr>
                   <td>PRESENT DESTINATION DELIVERING STATUS</td>
@@ -69,7 +70,7 @@
                 </tr>
                 <tr>
                   <td>FINAL DESTINATION DELIVERING DATE</td>
-                  <td>{{ trackedPackage.delivery_date }}</td>
+                  <td>{{ trackedPackage.deliveryDate }}</td>
                 </tr>
                 <tr>
                   <td>COMMENT</td>
@@ -78,7 +79,7 @@
               </tbody>
              <div class="bottom d-flex justify-content-between">
                 <p><router-link to="/contact">CLICK HERE TO CONTACT<br /> CUSTOMER CARE</router-link></p>
-                 <p>Alwyas refresh to see changes</p>
+                 <p>Always refresh should you miss anything!</p>
              </div>
             </table>
           </div>
@@ -91,6 +92,9 @@
 </template>
 
 <script>
+import db from "@/firebase/init";
+import axios from "axios"
+import firebase from "firebase";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 export default {
@@ -101,29 +105,15 @@ export default {
   data() {
     return {
       trackingId: null,
-      foundTrackedPackage: false,
       trackedPackage: null,
       button__text: 'Track your package here',
       err:null
     };
   },
   methods: {
-    async track(trackingId) {
-      this.button__text = 'Loading .....'
-      if (!trackingId) return;
-
-      // wrapping in a try catch block for error handling
-      try {
-        const trackedPackage = await db
-          .collection("package")
-          .doc(trackingId)
-          .get();
-        this.trackedPackage = trackedPackage.data();
-        this.foundTrackedPackage = true;
-        this.button__text = 'See tracking result below'
-      } catch (error) {
-        this.err = 'Tracking failed. Please check your internet connection and try again!'
-      }
+    async track() {
+      const response = await axios.get(`https://courierdemo.herokuapp.com/package/${this.$route.params.id}`)
+      this.trackedPackage = response.data.data
     }
   },
   mounted() {
@@ -138,20 +128,37 @@ export default {
 
 <style lang="scss" scoped>
 .track {
- .wrapper{
-   height: 100vh;
- }
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../assets/images/background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  .track__heading {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+      url("../assets/images/map.jpeg");
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    padding: 5rem 0;
+    h2 {
+      color: #fff;
+      padding-top: 5rem;
+      font-weight: bold;
+    }
+    p {
+      font-size: 0.85rem;
+      opacity: 0.8;
+      color: #fff;
+    }
+  }
   .result__holder {
     background: rgba(0, 0, 0, 0.5);
   }
   .content__holder {
-    background: #121C45;
+    background: rgba(0, 0, 0, 0.5);
     color: #fff;
-    padding: 2rem;
-    border-radius: 4px;
     margin-top: 10rem;
     margin-bottom: 2rem;
-    height: 15rem;
     hr {
       background: #fff !important;
     }
@@ -161,9 +168,11 @@ export default {
       font-size: 1rem;
     }
     form {
+      margin-top: 5rem;
+      margin-bottom: 3rem;
       label {
         color: #fff;
-        font-size: 0.94rem;
+        font-size: 0.84rem;
         opacity: 0.9;
         padding-bottom: 0.5rem;
       }
@@ -172,16 +181,15 @@ export default {
         height: 2.8rem;
         background: #f4f4f4;
         box-shadow: none !important;
-        border-radius: 3px;
+        border-radius: 0px;
         margin-bottom: 1rem;
       }
       .form__btn {
-        background: #FF5E14;
+        background: #052c7d;
         color: #fff;
         width: 100%;
         border-radius: 3px;
         padding: 0.9rem 2rem;
-        outline: none;
         border: none;
         font-size: 0.85rem;
       }

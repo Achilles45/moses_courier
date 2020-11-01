@@ -40,7 +40,7 @@ const routes = [
       component: Signin
     },
     {
-      path: '/tracking',
+      path: '/tracking/:id',
       name: 'Tracking',
       component: Tracking
     },
