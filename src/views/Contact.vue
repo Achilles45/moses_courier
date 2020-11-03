@@ -19,11 +19,11 @@
                 <p>We have a top notch team reaady to help you should you find any difficulties using our platform</p>
                 <div class="details pt-3">
                     <h5><i class="fa fa-home"></i>Contact Office</h5>
-                    <p>22 Eastern bye-pass, Bristol City, United Kingdom</p>
+                    <p>Dubia Creek, AI Seef District</p>
                     <h5><i class="fa fa-envelope"></i>Support Email</h5>
-                    <p>support@customsolutionsng.com</p>
-                    <h5><i class="fa fa-phone"></i> Phone Number</h5>
-                    <p><a href="tel:08122717322">08122717322</a></p>
+                    <p>support@expresscourierservice.net</p>
+                    <!-- <h5><i class="fa fa-phone"></i> Phone Number</h5> -->
+                    <!-- <p><a href="tel:08122717322">08122717322</a></p> -->
                 </div>
             </div>
             <div class="col-md-1"></div>

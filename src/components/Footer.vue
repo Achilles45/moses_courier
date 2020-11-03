@@ -3,12 +3,12 @@
       <div class="container">
           <div class="row">
               <div class="col-md-4 text">
-                  <img src="../assets/images/logo.png" class="logo" alt="">
+                  <img src="../assets/images/brand.jpg" class="logo" alt="">
                   <p>Our global Optimecs expertise, advanced supply chain technology & customized Optimecs solutions will help you develop and implement successful supply.</p>
-                  <h6><strong>Email Address</strong>: example@gmail.com</h6>
-                  <h6><strong>Phone Number</strong>: +263-3930-394</h6>
+                  <h6><strong>Email Address</strong>: support@expresscourierservice.net</h6>
+                  <!-- <h6><strong>Phone Number</strong>: +263-3930-394</h6> -->
               </div>
-              <div class="col-md-1"></div>
+              <div class="col-md-1"></div> 
               <div class="col-md-7">
                   <div class="row">
                       <div class="col-md-4">
@@ -48,7 +48,7 @@
       <hr>
       <div class="container">
           <div class="footer__bottom">
-             <p> &copy;2020, Optime, with Love by Customsolutionsng.com</p>
+             <p> &copy; All rights reserved. 2020. Express Courier Service</p>
           </div>
       </div>
 </footer>
