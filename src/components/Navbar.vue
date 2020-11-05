@@ -6,7 +6,7 @@
       >
         <div class="navbar__logo pt-2">
           <router-link to="/" class="logo">
-          <img src="../assets/images/brand.jpg" class="logo__img" alt="">
+          <img src="../assets/images/logo2.jpg" class="logo__img" alt="">
           </router-link>
         </div>
         <div class="navbar__links">
@@ -78,7 +78,7 @@ export default {
     color:red;
   }
   .logo__img {
-    max-width: 160px;
+    max-width: 100px;
     height: auto;
   }
   ul {
